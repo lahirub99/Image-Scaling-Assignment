@@ -65,7 +65,7 @@ plt.show()
 #endregion
 '''
 
-''' Resizing images:'''
+''' Resizing images:
 #region Section 4: Resizing images
 #region Section 4.1: Resizing method 01
 image_resized = cv2.resize(image_rgb, None, fx=0.25, fy=0.25)
@@ -86,5 +86,28 @@ fig, ax = plt.subplots( figsize=(5,5) )
 #ax.imshow(image_100x200)
 ax.imshow(image_upcaled)
 ax.grid(True)   # show gridlines
+plt.show()
+#endregion
+'''
+
+''' Applying Filters:'''
+#region Section 5: Applying Filters
+
+#region Section 5.1: Sharpening filter
+kernal_sharpening = np.array([[-1,-1,-1], 
+                              [-1,9,-1], 
+                              [-1,-1,-1]])
+image_sharpened = cv2.filter2D(image_rgb, -1, kernal_sharpening)
+# Parameters of filter2D: src = image_rgb, ddepth = -1, kernal = kernal_sharpening
+#endregion
+
+
+
+# Plotting the image
+fig, axs = plt.subplots( 1, 2, figsize=(10,5) )
+axs[0].imshow(image_rgb)
+axs[0].grid(True)   # show gridlines
+axs[1].imshow(image_sharpened)
+axs[1].grid(True)   # show gridlines
 plt.show()
 #endregion
