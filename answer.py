@@ -199,7 +199,24 @@ plt.imsave('images/output/upscale.jpg', image_upscaled)
 
 
 
-# # Save the image
-# save_image('original.jpg', image_rgb)
+#region 5: 
+# Compute the sum of the average of the squared difference between pixels in the original image (in step 2) and the re-samples image in (step 4)
+
+image_rgb = np.array(image_rgb.astype(np.float32))
+image_upscaled = np.array(image_upscaled.astype(np.float32)) 
+
+# calculation of the sum of the average of the squared differences
+difference = image_rgb - image_upscaled
+squared_diff = np.square(difference)
+average = np.mean(squared_diff)
+sum_of_squared_diff = np.sum(average)
+
+print('Sum of average of the squared differences:', sum_of_squared_diff)
+
+''' Output recieved:
+        Sum of average of the squared differences: 143.88313 '''
+
+#endregion
+
 
 
