@@ -16,11 +16,14 @@ def plot_image(image, title=''):
     plt.show()
     return
 
+
 ''' Saving a image in the disk '''
-def save_image(path, image):
+def save_image(filename, image):
     # Convert the image to RGB color space since CV2 uses BGR color space by default, so outputs will look inverted with abnormal colors. 
     temp = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
     # Save the image
+    path = 'images/output/'+filename   # separate folder created for output images
     cv2.imwrite(path, temp)
     print(f"Image saved at {path}")
     return
@@ -31,7 +34,7 @@ image_path = 'images/original.jpg'
 image = cv2.imread(image_path)
 print('Image successfully read in: ', image_path)
 
-# CV2 uses BGR color space by default. 
+# CV2 uses BGR color space by default, so outputs will look inverted with abnormal colors. 
 # Therefore, we need to convert to RGB color space.
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  
 
@@ -43,8 +46,7 @@ print('image_rgb.shape: ', image_rgb.shape)      #output : (height, width, chann
 plot_image(image_rgb, 'Original Image')
 
 # Save the image
-cv2.imwrite('images/output/original.jpg', image_rgb)
-
+save_image('original.jpg', image_rgb)
 
 
 # # Displaying the image:
