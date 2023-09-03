@@ -101,13 +101,28 @@ image_sharpened = cv2.filter2D(image_rgb, -1, kernal_sharpening)
 # Parameters of filter2D: src = image_rgb, ddepth = -1, kernal = kernal_sharpening
 #endregion
 
+#region Section 5.2: Blurring filter
+kernal_3x3 = np.ones((3,3), np.float32) / 9
+# kernal_3x3 =    [[0.11111111 0.11111111 0.11111111]
+#                  [0.11111111 0.11111111 0.11111111]
+#                  [0.11111111 0.11111111 0.11111111]]
 
+image_blurred = cv2.filter2D(image_rgb, -1, kernal_3x3)
+#endregion
 
 # Plotting the image
-fig, axs = plt.subplots( 1, 2, figsize=(10,5) )
+fig, axs = plt.subplots( 1, 3, figsize=(10,5) )
 axs[0].imshow(image_rgb)
-axs[0].grid(True)   # show gridlines
 axs[1].imshow(image_sharpened)
-axs[1].grid(True)   # show gridlines
+axs[2].imshow(image_blurred)
+
+# show gridlines
+# axs[0].grid(True)   
+# axs[1].grid(True)
+# axs[0].grid(axs[1].grid(axs[2].grid(True)))
+[ax.grid(True) for ax in axs]
+
 plt.show()
 #endregion
+
+
