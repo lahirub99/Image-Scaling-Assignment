@@ -6,11 +6,19 @@ import matplotlib.pyplot as plt
 import cv2
 #from glob import glob  # for reading in files
 
+#region Section 1: Reading in images
+#region Section 1.1: Reading in images using CV2
 image = cv2.imread('images/test.jpg')
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert to RGB color space
+#endregion
+
+#region Section 1.2: Reading in images using Matplotlib
+# image_rgb = plt.imread('images/test.jpg')
+#endregion
 
 #print(image.shape)      
 # output : (height, width, channels) = (h=903, w=902, 3)
+#endregion
 
 
 ''' Displaying the image:
@@ -54,7 +62,7 @@ plt.show()
 
 ''' Grayscale images:'''
 #region Section 3: Converting to grayscale
-image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+image_gray = cv2.cvtColor(image_rgb, cv2.COLOR_BGR2GRAY)
 print(image_gray.shape)         # output : (height, width) = (h=903, w=902)
 
 fig, ax = plt.subplots( figsize=(10,10) )
