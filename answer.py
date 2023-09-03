@@ -1,49 +1,48 @@
-import pandas as pd
 import numpy as np
-from PIL import Image
 import matplotlib.pyplot as plt
-import cv2
-#from glob import glob  # for reading in files
 
 
-''' Image plotting : (Used for testing purposes only) '''
-def plot_image(image, title='', gray=False):     # gray=True for grayscale images
-    fig, ax = plt.subplots( figsize=(5,5) )
-    if gray:
-        ax.imshow(image, cmap='gray')
-    else: ax.imshow(image)
-    ax.set_title(title)
-    ax.axis('on')      # visibility of x- and y-axes
-    ax.grid(True)     # show gridlines
-    plt.tight_layout()
-    plt.show()
-    return
+from utils.plot import plot_image
+
+# ''' Image plotting : (Used for testing purposes only) '''
+# def plot_image(image, title='', gray=False):     # gray=True for grayscale images
+#     fig, ax = plt.subplots( figsize=(5,5) )
+#     if gray:
+#         ax.imshow(image, cmap='gray')
+#     else: ax.imshow(image)
+#     ax.set_title(title)
+#     ax.axis('on')      # visibility of x- and y-axes
+#     ax.grid(True)     # show gridlines
+#     plt.tight_layout()
+#     plt.show()
+#     return
 
 
 ''' Saving a image in the disk '''
 def save_image(filename, image, gray=False):
-    # Convert the image to RGB color space since CV2 uses BGR color space by default, so outputs will look inverted with abnormal colors. 
-    if not (gray): temp = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    else:   temp = image
-
+    temp = np.array(image)
+    temp = temp.astype(np.uint8)
     # Save the image
     path = 'images/output/'+filename   # separate folder created for output images
-    cv2.imwrite(path, temp)
+    if gray:    
+        plt.imsave(path, temp, cmap='gray')
+    else:       
+        plt.imsave(path, temp)
     print(f"Image saved at {path}")
     return
 
 
-# 1: Reading in images
+#region 1: 
+# Reading in images 
 image_path = 'images/original.jpg'
-image = cv2.imread(image_path)
+# using Matplotlib library
+image_rgb = plt.imread(image_path)
 print('Image successfully read in: ', image_path)
 
-# CV2 uses BGR color space by default, so outputs will look inverted with abnormal colors. 
-# Therefore, we need to convert to RGB color space.
-image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  
-
-print('image_rgb.shape: ', image_rgb.shape)      #output : (height, width, channels) = (h=200, w=200, 3)
+# print('image_rgb.shape: ', image_rgb.shape)      #output : (height, width, channels) = (h=200, w=200, 3)
 height, width, channels = image_rgb.shape
+#endregion
+
 
 
 #region 2: 
@@ -59,18 +58,20 @@ for i in range(height):
         # Formula: Y = 0.299 R + 0.587 G + 0.114 B
         image_gray[i][j] = int(0.299*r + 0.587*g + 0.114*b)
 
-        # # Average method
+        ### Another methods to convert to grayscale:
+        ## 1. Average method
         # image_rgb[i][j] = int(sum(r + g + b)/3)
-
-        # # Lightness method
+        ## 2. Lightness method
         # image_rgb[i][j] = int((max(r, g, b) + min(r, g, b))/2)
+else:
+    print('Image converted to grayscale successfully!')
 
-# plot_image(image_gray, 'Grayscale Image', True)
+plot_image(image_gray, 'Grayscale Image', True)
 
-image_gray = np.array(image_gray).astype(np.uint8)
-plt.imsave('images/output/gray.jpg', image_gray, cmap='gray')
+# image_gray = np.array(image_gray).astype(np.uint8)
+# plt.imsave('images/output/gray.jpg', image_gray, cmap='gray')
 
-# save_image('output_gray.jpg', image_gray, True)
+save_image('gray.jpg', image_gray, True)
 #endregion
 
 
@@ -127,12 +128,11 @@ for y in range(int(height*0.7)):
         # image_resampled[y][x] = [int(image_rgb[y1][x1][k] + (x/0.7 - x1) * (image_rgb[y2][x1][k] - image_rgb[y1][x1][k]) / (x2 - x1)) for k in range(3)]
 else:
     print('Image downscaled successfully!')
-        
-image_downscaled = np.array(image_resampled)
-plot_image(image_downscaled, 'Downscaled Image')
 
-image_downscaled = image_downscaled.astype(np.uint8)
-plt.imsave('images/output/downscale.jpg', image_downscaled)
+#Test      
+# plot_image(image_resampled, 'Downscaled Image')
+
+save_image('downscaled.jpg', image_resampled)
 #endregion
 
 
@@ -172,10 +172,10 @@ for y in range(height):
             # Formula: f(x,y) = (1-a)*(1-b)*f(x1,y1) + a*(1-b)*f(x2,y1) + (1-a)*b*f(x1,y2) + a*b*f(x2,y2) 
             
             ## Red channel
-            r = (1-b)*(1-a)*image_resampled[y1][x1][0] + (1-b)*a*image_resampled[y1][x2][0] + b*(1-a)*image_resampled[y2][x1][0] + b*a*image_downscaled[y2][x2][0]   
+            r = (1-b)*(1-a)*image_resampled[y1][x1][0] + (1-b)*a*image_resampled[y1][x2][0] + b*(1-a)*image_resampled[y2][x1][0] + b*a*image_resampled[y2][x2][0]   
 
             ## Green channel
-            g = (1-b)*(1-a)*image_resampled[y1][x1][1] + (1-b)*a*image_resampled[y1][x2][1] + b*(1-a)*image_resampled[y2][x1][1] + b*a*image_downscaled[y2][x2][1]
+            g = (1-b)*(1-a)*image_resampled[y1][x1][1] + (1-b)*a*image_resampled[y1][x2][1] + b*(1-a)*image_resampled[y2][x1][1] + b*a*image_resampled[y2][x2][1]
 
             ## Blue channel
             b = (1-b)*(1-a)*image_resampled[y1][x1][2] + (1-b)*a*image_resampled[y1][x2][2] + b*(1-a)*image_resampled[y2][x1][2] + b*a*image_resampled[y2][x2][2]
@@ -189,11 +189,10 @@ for y in range(height):
 else:
     print('Image upscaled successfully!')
         
+#Testing:
+# plot_image(image_upscaled, 'Upscaled Image')
 
-plot_image(image_upscaled, 'Upscaled Image')
-image_upscaled = np.array(image_upscaled)
-image_upscaled = image_upscaled.astype(np.uint8)
-plt.imsave('images/output/upscale.jpg', image_upscaled)
+save_image('upscaled.jpg', image_upscaled)
 #endregion
 
 
@@ -202,8 +201,8 @@ plt.imsave('images/output/upscale.jpg', image_upscaled)
 #region 5: 
 # Compute the sum of the average of the squared difference between pixels in the original image (in step 2) and the re-samples image in (step 4)
 
-image_rgb = np.array(image_rgb.astype(np.float32))
-image_upscaled = np.array(image_upscaled.astype(np.float32)) 
+image_rgb = np.array(image_rgb).astype(np.float32)
+image_upscaled = np.array(image_upscaled).astype(np.float32) 
 
 # calculation of the sum of the average of the squared differences
 difference = image_rgb - image_upscaled
