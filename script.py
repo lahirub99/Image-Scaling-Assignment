@@ -19,8 +19,16 @@ axs[0][0].imshow(image_rgb)
 axs[0][1].imshow(image_rgb[:,:,0], cmap='Reds')
 axs[0][2].imshow(image_rgb[:,:,1], cmap='Greens')
 axs[0][3].imshow(image_rgb[:,:,2], cmap='Blues')
+axs[1][0].imshow(image)
+axs[1][1].imshow(image[:,:,0], cmap='Reds')
+axs[1][2].imshow(image[:,:,1], cmap='Greens')
+axs[1][3].imshow(image[:,:,2], cmap='Blues')
 #axs.axis('off') # visibility of x- and y-axes
 #axs.grid(True)   # show gridlines
+for i in range(2):
+    for j in range(4):
+        axs[i][j].axis('on')
+        axs[i][j].grid(True)
 
 plt.show()
 
