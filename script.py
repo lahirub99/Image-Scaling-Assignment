@@ -76,10 +76,15 @@ print(image_resized.shape)      # output : (height, width, channels) = (h=100, w
 image_100x200 = cv2.resize(image_rgb, (100, 200))
 #endregion
 
+#region Section 4.3: Resizing method 03
+image_upcaled = cv2.resize(image_rgb, (2000, 2000), interpolation=cv2.INTER_CUBIC)
+#endregion
+
 # Plotting the image
 fig, ax = plt.subplots( figsize=(5,5) )
 #ax.imshow(image_resized)
-ax.imshow(image_100x200)
+#ax.imshow(image_100x200)
+ax.imshow(image_upcaled)
 ax.grid(True)   # show gridlines
 plt.show()
 #endregion
