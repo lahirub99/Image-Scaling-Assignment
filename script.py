@@ -50,6 +50,8 @@ plt.show()
 #endregion
 '''
 
+
+''' Grayscale images:
 #region Section 3: Converting to grayscale
 image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 print(image_gray.shape)         # output : (height, width) = (h=903, w=902)
@@ -57,6 +59,27 @@ print(image_gray.shape)         # output : (height, width) = (h=903, w=902)
 fig, ax = plt.subplots( figsize=(10,10) )
 ax.imshow(image_gray, cmap='gray')
 #ax.axis('off') # visibility of x- and y-axes
+ax.grid(True)   # show gridlines
+plt.show()
+
+#endregion
+'''
+
+''' Resizing images:'''
+#region Section 4: Resizing images
+#region Section 4.1: Resizing method 01
+image_resized = cv2.resize(image_rgb, None, fx=0.25, fy=0.25)
+print(image_resized.shape)      # output : (height, width, channels) = (h=100, w=100, 3)
+#endregion
+
+#region Section 4.2: Resizing method 02
+image_100x200 = cv2.resize(image_rgb, (100, 200))
+#endregion
+
+# Plotting the image
+fig, ax = plt.subplots( figsize=(5,5) )
+#ax.imshow(image_resized)
+ax.imshow(image_100x200)
 ax.grid(True)   # show gridlines
 plt.show()
 #endregion
