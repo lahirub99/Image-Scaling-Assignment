@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 
@@ -51,7 +52,7 @@ plt.show()
 '''
 
 
-''' Grayscale images:
+''' Grayscale images:'''
 #region Section 3: Converting to grayscale
 image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 print(image_gray.shape)         # output : (height, width) = (h=903, w=902)
@@ -63,9 +64,9 @@ ax.grid(True)   # show gridlines
 plt.show()
 
 #endregion
-'''
 
-''' Resizing images:
+
+''' Resizing images:'''
 #region Section 4: Resizing images
 #region Section 4.1: Resizing method 01
 image_resized = cv2.resize(image_rgb, None, fx=0.25, fy=0.25)
@@ -77,18 +78,18 @@ image_100x200 = cv2.resize(image_rgb, (100, 200))
 #endregion
 
 #region Section 4.3: Resizing method 03
-image_upcaled = cv2.resize(image_rgb, (2000, 2000), interpolation=cv2.INTER_CUBIC)
+image_upscaled = cv2.resize(image_rgb, (2000, 2000), interpolation=cv2.INTER_CUBIC)
 #endregion
 
 # Plotting the image
 fig, ax = plt.subplots( figsize=(5,5) )
 #ax.imshow(image_resized)
 #ax.imshow(image_100x200)
-ax.imshow(image_upcaled)
+ax.imshow(image_upscaled)
 ax.grid(True)   # show gridlines
 plt.show()
 #endregion
-'''
+
 
 ''' Applying Filters:'''
 #region Section 5: Applying Filters
@@ -126,3 +127,54 @@ plt.show()
 #endregion
 
 
+#region Section 6: Saving images
+
+#region Section 6.1: Saving images in BGR color space
+## CV2 uses BGR color space by default, so outputs will look inverted with abnormal colors
+# cv2.imwrite('images/output/output_gray.jpg', image_gray)
+# cv2.imwrite('images/output/output_resized.jpg', image_resized)
+# cv2.imwrite('images/output/output_100x200.jpg', image_100x200)
+# cv2.imwrite('images/output/output_upscaled.jpg', image_upscaled)
+# cv2.imwrite('images/output/output_sharpened.jpg', image_sharpened)
+# cv2.imwrite('images/output/output_blurred.jpg', image_blurred)
+#endregion
+
+images = [image_gray, image_resized, image_100x200, image_upscaled, image_sharpened, image_blurred]
+
+# Define the output directory
+output_directory = 'images/output/output_'
+output_filenames = ['gray', 'resized', "100x200", "upscaled", "sharpened", "blurred"]
+
+'''
+#region Section 6.2: Saving images in RGB color space using CV2
+# Loop through the images and save them with color space conversion
+for i in range (6):
+    # Construct the output file name by appending it to the output directory
+    output_filename = f"{output_directory}{output_filenames[i]}{'.jpg'}"
+    #     The error message you're encountering, "could not find a writer for the specified extension," typically occurs 
+    #     when OpenCV can't determine the correct image format based on the file extension you provided in the output_filename.
+    #     To resolve this issue, make sure you provide a file extension that is recognized by OpenCV's imwrite function. 
+    #     Common image formats that are supported include .jpg, .png, .bmp, and others.   
+    
+    # Convert the image to RGB color space and save it
+    temp = cv2.cvtColor(images[i], cv2.COLOR_BGR2RGB)
+    cv2.imwrite(output_filename, temp)
+    print(f"Image saved at {output_filename}")
+#endregion
+'''
+
+#region Section 6.3: Saving images in RGB color space using Matplotlib
+# Loop through the images and save them with color space conversion
+for i in range (6):
+    # Construct the output file name by appending it to the output directory
+    output_filename = f"{output_directory}{output_filenames[i]}{'_mthplt.jpg'}"
+    
+    ''' !!! if the image was imported in CV2 it should be convert the image to RGB color space and save it. '''
+
+    # Just save the image directly, no need to convert back to RGB from BGR color space as we did with CV2
+    cv2.imwrite(output_filename, images[i])
+    print(f"Image saved at {output_filename}")
+
+#endregion
+
+#endregion
