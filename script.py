@@ -7,7 +7,7 @@ import cv2
 
 #region Section 1: Reading in images
 #region Section 1.1: Reading in images using CV2
-image = cv2.imread('images/test.jpg')
+image = cv2.imread('images/original.jpg')
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert to RGB color space
 #endregion
 
@@ -76,7 +76,7 @@ plt.show()
 ''' Resizing images:'''
 #region Section 4: Resizing images
 #region Section 4.1: Resizing method 01
-image_resized = cv2.resize(image_rgb, None, fx=0.25, fy=0.25)
+image_resized = cv2.resize(image_rgb, None, fx=0.7, fy=0.7)
 print(image_resized.shape)      # output : (height, width, channels) = (h=100, w=100, 3)
 #endregion
 
@@ -85,7 +85,7 @@ image_100x200 = cv2.resize(image_rgb, (100, 200))
 #endregion
 
 #region Section 4.3: Resizing method 03
-image_upscaled = cv2.resize(image_rgb, (2000, 2000), interpolation=cv2.INTER_CUBIC)
+image_upscaled = cv2.resize(image_resized, (200, 200), interpolation=cv2.INTER_CUBIC)
 #endregion
 
 # Plotting the image
@@ -152,7 +152,7 @@ images = [image_gray, image_resized, image_100x200, image_upscaled, image_sharpe
 output_directory = 'images/output/output_'
 output_filenames = ['gray', 'resized', "100x200", "upscaled", "sharpened", "blurred"]
 
-'''
+
 #region Section 6.2: Saving images in RGB color space using CV2
 # Loop through the images and save them with color space conversion
 for i in range (6):
@@ -168,19 +168,19 @@ for i in range (6):
     cv2.imwrite(output_filename, temp)
     print(f"Image saved at {output_filename}")
 #endregion
-'''
 
-#region Section 6.3: Saving images in RGB color space using Matplotlib
-# Loop through the images and save them with color space conversion
-for i in range (6):
-    # Construct the output file name by appending it to the output directory
-    output_filename = f"{output_directory}{output_filenames[i]}{'_mthplt.jpg'}"
+
+# #region Section 6.3: Saving images in RGB color space using Matplotlib
+# # Loop through the images and save them with color space conversion
+# for i in range (6):
+#     # Construct the output file name by appending it to the output directory
+#     output_filename = f"{output_directory}{output_filenames[i]}{'_mthplt.jpg'}"
     
-    ''' !!! if the image was imported in CV2 it should be convert the image to RGB color space and save it. '''
+#     ''' !!! if the image was imported in CV2 it should be convert the image to RGB color space and save it. '''
 
-    # Just save the image directly, no need to convert back to RGB from BGR color space as we did with CV2
-    cv2.imwrite(output_filename, images[i])
-    print(f"Image saved at {output_filename}")
-#endregion
+#     # Just save the image directly, no need to convert back to RGB from BGR color space as we did with CV2
+#     cv2.imwrite(output_filename, images[i])
+#     print(f"Image saved at {output_filename}")
+# #endregion
 
 #endregion
