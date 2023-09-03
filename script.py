@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import cv2
 #from glob import glob  # for reading in files
 
-image = cv2.imread('images/dunithi.jpg')
+image = cv2.imread('images/test.jpg')
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert to RGB color space
 
 #print(image.shape)      
@@ -174,7 +174,6 @@ for i in range (6):
     # Just save the image directly, no need to convert back to RGB from BGR color space as we did with CV2
     cv2.imwrite(output_filename, images[i])
     print(f"Image saved at {output_filename}")
-
 #endregion
 
 #endregion
